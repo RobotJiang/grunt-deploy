@@ -44,7 +44,27 @@ grunt.initConfig({
   },
 })
 ```
-
+Use your private authorized_keys
+```js
+grunt.initConfig({
+  deploy: {
+    liveservers: {
+      options:{
+        servers: [{
+          host: '123.123.123.12',
+          port: 22,
+          username: 'username',
+					#password: 'password'
+					privateKey: require('fs').readFileSync(path.join(path.homedir(),'.ssh/id_rsa'), 'utf8')
+        }],
+        cmds_before_deploy: ["some cmds you may want to exec before deploy"],
+        cmds_after_deploy: ["cd your deploy path", "pm2 restart server.coffee"],
+        deploy_path: 'your deploy path in server'
+      }
+    }
+  },
+})
+```
 
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
