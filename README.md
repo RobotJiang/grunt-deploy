@@ -23,8 +23,9 @@ grunt.loadNpmTasks('grunt-deploy');
 ## The "deploy" task
 
 ### Overview
-In your project's Gruntfile, add a section named `deploy` to the data object passed into `grunt.initConfig()`.
+In your project's Gruntfile, add a section named `deploy` to the data object passed into `grunt.initConfig()`.   
 
+Use your name and password  
 ```js
 grunt.initConfig({
   deploy: {
@@ -44,7 +45,7 @@ grunt.initConfig({
   },
 })
 ```
-Use your private authorized_keys
+Use your private authorized_keys  
 ```js
 grunt.initConfig({
   deploy: {
@@ -53,7 +54,7 @@ grunt.initConfig({
         servers: [{
           host: '123.123.123.12',
           port: 22,
-          username: 'username',       
+          username: 'username',
 					privateKey: require('fs').readFileSync(path.join(path.homedir(),'.ssh/id_rsa'), 'utf8')
         }],
         cmds_before_deploy: ["some cmds you may want to exec before deploy"],
