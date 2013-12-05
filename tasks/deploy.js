@@ -54,24 +54,32 @@
       }
 
       console.log('executing cmds before deploy');
+
       execCmds(options.cmds_before_deploy, 0, true, function(){
+
         console.log('cmds before deploy executed');
 
+				//prepare folder
+				var prepareFolder = 'mkdir -p '+ options.deploy_path + '/node_modules && mkdir -p '+ options.deploy_path + '/releases && mkdir -p '+ options.deploy_path + '/current '
+        var createFolder = prepareFolder + ' && cd ' + options.deploy_path + '/releases && mkdir ' + timeStamp;
 
-        var createFolder = 'cd ' + options.deploy_path + '/releases && mkdir ' + timeStamp;
         var removeCurrent = 'rm -rf ' + options.deploy_path + '/current';
         var setCurrent = 'ln -s ' + options.deploy_path + '/releases/' + timeStamp + ' ' + options.deploy_path + '/current';
+				//set node modules soft link
+				var setModules = 'ln -s ' + options.deploy_path + '/node_modules ' +  options.deploy_path + '/current/node_modules';
+				//install dependency modules
+				var install_dependency = ' cd ' + options.deploy_path + '/current && npm install '
         
         console.log('start deploy');
-        exec(createFolder + ' && ' + removeCurrent + ' && ' + setCurrent, false,function(){
+
+        exec(createFolder + ' && ' + removeCurrent + ' && ' + setCurrent + ' && ' + setModules+ ' && ' + install_dependency, false,function(){
 
           var sys = require('sys')
           var execLocal = require('child_process').exec;
           var child;
-
-          child = execLocal("scp -r . " + server.username + "@" + server.host + ":" + options.deploy_path + "/releases/" + timeStamp, function (error, stdout, stderr) {
+					//use rsync
+          child = execLocal("rsync -r --exclude='.*' --exclude='node_modules' . " + server.username + "@" + server.host + ":" + options.deploy_path + "/releases/" + timeStamp, function (error, stdout, stderr) {
             console.log('end deploy');
-
             console.log('executing cmds after deploy');
             execCmds(options.cmds_after_deploy, 0, true, function(){
               console.log('cmds after deploy executed');
@@ -203,3 +211,4 @@
 });
 
 };
+
