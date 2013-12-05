@@ -53,8 +53,7 @@ grunt.initConfig({
         servers: [{
           host: '123.123.123.12',
           port: 22,
-          username: 'username',
-					#password: 'password'
+          username: 'username',       
 					privateKey: require('fs').readFileSync(path.join(path.homedir(),'.ssh/id_rsa'), 'utf8')
         }],
         cmds_before_deploy: ["some cmds you may want to exec before deploy"],
