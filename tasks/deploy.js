@@ -48,7 +48,7 @@
         }
         else{
           exec(cmds[index++], showLog, function(){
-            execCmds(cmds,index,next);
+            execCmds(cmds,index,true,next);
           })
         }
       }
